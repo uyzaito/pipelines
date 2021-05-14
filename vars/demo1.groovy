@@ -5,38 +5,40 @@ def call(body) {
 	body()
 
     node ('maven') {
-        stage('Clonar') {
-          checkout([$class: 'GitSCM',
-          branches: [[name: "${pipelineParams.branch}"]],
-          extensions: [],
-          userRemoteConfigs: [[url: "${pipelineParams.repo}"]]])
-        }
-        stage('Lectura de Pom') {
-                IMAGE = readMavenPom(file: "pom.xml").getArtifactId()
-                GROUP = readMavenPom(file: "pom.xml").getGroupId()
-                PACKAGE = readMavenPom(file: "pom.xml").getPackaging()
-                BUILD = readMavenPom(file: "pom.xml").getBuild()
-                NAME = readMavenPom(file: "pom.xml").getName()
-                VERSION = readMavenPom(file: "pom.xml").getVersion()
-                echo "$IMAGE"
-                echo "$GROUP"
-                echo "$PACKAGE"
-                echo "$BUILD"
-                echo "$NAME"
-                echo "$VERSION"
-        }
-        /*stage('Construir') {
-            sh "mvn clean install pom.xml -Dmaven.test.skip=true"
-        }*/
-        stage ('Tests') {
-            parallel: {
-                stage('Unity test') {
-                    sh "mvn test -f pom.xml"
-                }
-                stage('Sonar Analysis',) {
-                    withSonarQubeEnv('sonar') {
-                        //sh "mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar -f pom.xml"
-                        sh "mvn $SONAR_MAVEN_GOAL -f pom.xml"
+        ansiColor('xterm') {
+            stage('Clonar') {
+            checkout([$class: 'GitSCM',
+            branches: [[name: "${pipelineParams.branch}"]],
+            extensions: [],
+            userRemoteConfigs: [[url: "${pipelineParams.repo}"]]])
+            }
+            stage('Lectura de Pom') {
+                    IMAGE = readMavenPom(file: "pom.xml").getArtifactId()
+                    GROUP = readMavenPom(file: "pom.xml").getGroupId()
+                    PACKAGE = readMavenPom(file: "pom.xml").getPackaging()
+                    BUILD = readMavenPom(file: "pom.xml").getBuild()
+                    NAME = readMavenPom(file: "pom.xml").getName()
+                    VERSION = readMavenPom(file: "pom.xml").getVersion()
+                    echo "$IMAGE"
+                    echo "$GROUP"
+                    echo "$PACKAGE"
+                    echo "$BUILD"
+                    echo "$NAME"
+                    echo "$VERSION"
+            }
+            /*stage('Construir') {
+                sh "mvn clean install pom.xml -Dmaven.test.skip=true"
+            }*/
+            stage ('Tests') {
+                parallel: {
+                    stage('Unity test') {
+                        sh "mvn test -f pom.xml"
+                    }
+                    stage('Sonar Analysis',) {
+                        withSonarQubeEnv{
+                            echo "$SONAR_MAVEN_GOAL"
+                            sh "mvn $SONAR_MAVEN_GOAL -f pom.xml"
+                        }
                     }
                 }
             }
