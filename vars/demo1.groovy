@@ -9,15 +9,15 @@ def call(body) {
             deleteDir()
         }
         stage('Clonar') {
-            checkout(scm: [$class: 'GitSCM', userRemoteConfigs: [[url: "${repo}", name: "${branch}"], [credentialsId: 'cicd']]])
+            checkout(scm: [$class: 'GitSCM', userRemoteConfigs: [[url: "${pipelineParams.repo}", name: "${pipelineParams.branch}"], [credentialsId: "${pipelineParams.user}"]]])
         }
         stage('Lectura de Pom') {
-                IMAGE = readMavenPom(file: "$branch/pom.xml").getArtifactId()
-                GROUP = readMavenPom(file: "$branch/pom.xml").getGroupId()
-                PACKAGE = readMavenPom(file: "$branch/pom.xml").getPackaging()
-                BUILD = readMavenPom(file: "$branch/pom.xml").getBuild()
-                NAME = readMavenPom(file: "$branch/pom.xml").getName()
-                VERSION = readMavenPom(file: "$branch/pom.xml").getVersion()
+                IMAGE = readMavenPom(file: "$pipelineParams.branch/pom.xml").getArtifactId()
+                GROUP = readMavenPom(file: "$pipelineParams.branch/pom.xml").getGroupId()
+                PACKAGE = readMavenPom(file: "$pipelineParams.branch/pom.xml").getPackaging()
+                BUILD = readMavenPom(file: "$pipelineParams.branch/pom.xml").getBuild()
+                NAME = readMavenPom(file: "$pipelineParams.branch/pom.xml").getName()
+                VERSION = readMavenPom(file: "$pipelineParams.branch/pom.xml").getVersion()
                 echo "$IMAGE"
                 echo "$GROUP"
                 echo "$PACKAGE"
@@ -26,16 +26,16 @@ def call(body) {
                 echo "$VERSION"
         }        
         stage('Construir') {
-            sh "mvn clean install $branch/pom.xml -Dmaven.test.skip=true"
+            sh "mvn clean install $pipelineParams.branch/pom.xml -Dmaven.test.skip=true"
         }
         stage ('Tests') {
             parallel: {
                 stage('Unity test') {
-                    sh "mvn test -f $branch/pom.xml"
+                    sh "mvn test -f $pipelineParams.branch/pom.xml"
                 }
                 stage('Sonar Analysis',) {
                     withSonarQubeEnv('sonar') {
-                        sh "mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar -f $branch/pom.xml"
+                        sh "mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar -f $pipelineParams.branch/pom.xml"
                     }
                 }
             }
