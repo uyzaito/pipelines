@@ -5,9 +5,6 @@ def call(body) {
 	body()
 
     node ('maven') {
-        stage('Limpiar') {
-            deleteDir()
-        }
         stage('Clonar') {
           checkout([$class: 'GitSCM',
           branches: [[name: "${pipelineParams.branch}"]],
@@ -28,9 +25,9 @@ def call(body) {
                 echo "$NAME"
                 echo "$VERSION"
         }
-        stage('Construir') {
+        /*stage('Construir') {
             sh "mvn clean install pom.xml -Dmaven.test.skip=true"
-        }
+        }*/
         stage ('Tests') {
             parallel: {
                 stage('Unity test') {
@@ -43,8 +40,8 @@ def call(body) {
                 }
             }
         }
-        stage('Publicar'){
+        /*stage('Publicar'){
             sh "mvn deploy:deploy-file -DgeneratePom=false -Dversion=${VERSION} -DgroupId=${GROUP} -DartifactId=${IMAGE} -DrepositoryId=nexus -Durl=${nexusRepo} -Dfile=$branch/target/${IMAGE}-${VERSION}.${PACKAGE} -DuniqueVersion=false"
-        }
+        }*/
     }
 }
