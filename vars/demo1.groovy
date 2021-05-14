@@ -18,12 +18,12 @@ def call(body) {
                 BUILD = readMavenPom(file: "pom.xml").getBuild()
                 NAME = readMavenPom(file: "pom.xml").getName()
                 VERSION = readMavenPom(file: "pom.xml").getVersion()
-                echo "$IMAGE"
-                echo "$GROUP"
-                echo "$PACKAGE"
-                echo "$BUILD"
-                echo "$NAME"
-                echo "$VERSION"
+                echo "Image     --- $IMAGE"
+                echo "Group     --- $GROUP"
+                echo "Package   --- $PACKAGE"
+                echo "Build     --- $BUILD"
+                echo "Name      --- $NAME"
+                echo "Version   --- $VERSION"
         }
         /*stage('Construir') {
             sh "mvn clean install pom.xml -Dmaven.test.skip=true"
