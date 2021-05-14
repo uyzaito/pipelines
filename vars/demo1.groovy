@@ -13,7 +13,7 @@ def call(body) {
           checkout([$class: 'GitSCM',
           branches: [[name: "${pipelineParams.branch}"]],
           extensions: [],
-          userRemoteConfigs: [[url: "${pipelineParams.repo}"], [credentialsId: "${pipelineParams.user}"]]])
+          userRemoteConfigs: [[url: "${pipelineParams.repo}"]]])
         }
         stage('Lectura de Pom') {
                 IMAGE = readMavenPom(file: "${pipelineParams.branch}/pom.xml").getArtifactId()
