@@ -25,9 +25,9 @@ def call(body) {
                 echo "Name      --- $NAME"
                 echo "Version   --- $VERSION"
         }
-        /*stage('Construir') {
+        stage('Construir') {
             sh "mvn clean install pom.xml -Dmaven.test.skip=true"
-        }*/
+        }
         stage ('Tests') {
             parallel: {
                 stage('Unity test') {
