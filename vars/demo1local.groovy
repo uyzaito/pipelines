@@ -42,6 +42,9 @@ def call(body) {
                 }
             }
         }
+        stage('s2i buiild') {
+            sh "s2i create . $IMAGE "
+        }
         /*stage('Publicar'){
             sh "mvn deploy:deploy-file -DgeneratePom=false -Dversion=${VERSION} -DgroupId=${GROUP} -DartifactId=${IMAGE} -DrepositoryId=nexus -Durl=${nexusRepo} -Dfile=$branch/target/${IMAGE}-${VERSION}.${PACKAGE} -DuniqueVersion=false"
         }*/
