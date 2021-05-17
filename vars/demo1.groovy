@@ -4,7 +4,7 @@ def call(body) {
 	body.delegate = pipelineParams
 	body()
 
-    node ('maven') {
+    node ("${pipelineParams.node}") {
         stage('Clonar') {
           checkout([$class: 'GitSCM',
           branches: [[name: "${pipelineParams.branch}"]],
