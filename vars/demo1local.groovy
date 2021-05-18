@@ -43,7 +43,7 @@ def call(body) {
             }
         }
         stage('Publicar'){
-            sh "mvn deploy:deploy-file -DgeneratePom=false -Dversion=${VERSION} -DgroupId=${GROUP} -DartifactId=${IMAGE} -DrepositoryId=nexus -Durl=${pipelineParams.nexusrepo} -Dfile=$branch/target/${IMAGE}-${VERSION}.${PACKAGE} -DuniqueVersion=false"
+            sh "mvn deploy:deploy-file -DgeneratePom=false -Dversion=${VERSION} -DgroupId=${GROUP} -DartifactId=${IMAGE} -DrepositoryId=nexus -Durl=${pipelineParams.nexusrepo} -Dfile=target/${IMAGE}-${VERSION}.${PACKAGE} -DuniqueVersion=false"
         }
     }
 }
