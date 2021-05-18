@@ -30,10 +30,10 @@ def call(body) {
         }
         stage ('Tests') {
             parallel: {
-                stage('Unity test') {
+                stage('Test Unitario') {
                     sh "mvn test -f pom.xml"
                 }
-                stage('Sonar Analysis',) {
+                stage('Analisis Sonarqube',) {
                     withSonarQubeEnv {
                         echo " SONAR GOAL --- $SONAR_MAVEN_GOAL"
                         sh "mvn $SONAR_MAVEN_GOAL -f pom.xml"
