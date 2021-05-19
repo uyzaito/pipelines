@@ -94,19 +94,19 @@ def call(body) {
                         error "*** File: ${artifactPath}, could not be found";
                     }
         }
-        /*node ('master'){         
+        //node ('master'){         
             stage('Build Image'){                 
                 sh """
                     mkdir -p ocp/deployments
                     cp target/${IMAGE}-${VERSION}.${PACKAGE} ocp/deployments/
                     oc new-build --binary=true --name=${IMAGE} --image-stream=redhat-openjdk18-openshift
-                    oc start-build jdk-us-app --from-dir=./ocp --follow
-                    oc new-app jdk-us-app
+                    oc start-build ${IMAGE} --from-dir=./ocp --follow
+                    oc new-app ${IMAGE}
                 """
             }
 
-        }*/
-        stage('s2i'){
+        //}
+        /*stage('s2i'){
             openshift.withCluster(){
                 openshift.withProject("${pipelineParams.ambiente}"){
                     def build = openshift.selector("bc", IMAGE);
@@ -115,6 +115,6 @@ def call(body) {
                     echo "${IMAGE} build status: ${startedBuild.object().status}";
                 }                
             }
-        }
+        }*/
     }
 }
