@@ -34,9 +34,8 @@ def call(body) {
                     sh "mvn test -f pom.xml"
                 }
                 stage('Analisis Sonarqube',) {
-                    def mvnHome = tool name: 'maven-3', type: 'maven'
-                    withSonarQubeEnv ('sonar4.6') {
-                        echo " SONAR GOAL --- $SONAR_MAVEN_GOAL"
+                    def sonarHome = tool 'sonar';
+                    withSonarQubeEnv ('sonar') {
                         sh "${mvnHome}/bin/mvn sonar:sonar"
                     }
                 }
