@@ -36,7 +36,7 @@ def call(body) {
                 stage('Analisis Sonarqube',) {
                     def sonarHome = tool 'sonar';
                     withSonarQubeEnv ('sonar') {
-                        sh "${mvnHome}/bin/mvn sonar:sonar"
+                        sh "${sonarHome}/bin/sonar-scanner"
                     }
                 }
             }
