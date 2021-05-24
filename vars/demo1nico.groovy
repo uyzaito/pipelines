@@ -34,9 +34,8 @@ def call(body) {
                     sh "mvn test -f pom.xml"
                 }
                 stage('Analisis Sonarqube',) {
-                    def sonarHome = tool 'sonar';
-                    withSonarQubeEnv ('sonar') {
-                        sh "${sonarHome}/bin/sonar-scanner"
+                        echo " SONAR GOAL --- $SONAR_MAVEN_GOAL"
+                        sh "mvn $SONAR_MAVEN_GOAL -DskipTests=true "
                     }
                 }
             }
