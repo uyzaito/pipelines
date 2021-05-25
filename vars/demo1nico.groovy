@@ -38,7 +38,7 @@ def call(body) {
 //                        echo " SONAR GOAL --- $SONAR_MAVEN_GOAL"
 //                        sh "mvn $SONAR_MAVEN_GOAL -DskipTests=true"
 //                    }
-                }
+//                }
             }
         }
         stage('Publicar'){
