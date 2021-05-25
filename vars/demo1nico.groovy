@@ -72,7 +72,7 @@ def call(body) {
                                 // Lets upload the pom.xml file for additional information for Transitive dependencies
                                 [artifactId: pom.artifactId,
                                 classifier: '',
-                                file: "pom.xml",
+                                file: "honest-corn-1.0.0.jar",
                                 type: "pom"]
                             ]
                         );
