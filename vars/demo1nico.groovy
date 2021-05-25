@@ -36,7 +36,7 @@ def call(body) {
                 stage('Analisis Sonarqube',) {
                     withSonarQubeEnv {
                         echo " SONAR GOAL --- $SONAR_MAVEN_GOAL"
-                        sh "mvn sonar:sonar -Dsonar.login=fa50b4b70e68e43fc84da9b56232eaaddddef5f4"
+                        sh "mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.6.0.1398:sonar -Dsonar.projectName=\"my_project ($BRANCH_NAME)\" -Dsonar.projectKey=honest-corn:master -Pquality_control"
 
                     }
                 }
