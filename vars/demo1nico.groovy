@@ -43,7 +43,7 @@ def call(body) {
         }
         stage('Publicar'){
             NEXUS_VERSION = "nexus3"
-            NEXUS_PROTOCOL = "http"
+//            NEXUS_PROTOCOL = "http"
             NEXUS_URL = "${pipelineParams.nexusurl}"
             NEXUS_REPOSITORY = "maven-releases"
             NEXUS_CREDENTIAL_ID = "nexus-credentials"
