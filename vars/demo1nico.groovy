@@ -36,7 +36,11 @@ def call(body) {
                 stage('Analisis Sonarqube',) {
                     withSonarQubeEnv {
                         echo " SONAR GOAL --- $SONAR_MAVEN_GOAL"
-                        sh "mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.9.0.2155:sonar -Dsonar.projectName=\"my_project ${env.BRANCH_NAME}\" -Dsonar.projectKey=honest-corn:master -Pquality_control"
+                        sh '''/opt/sonarscanner/sonar-scanner-3.2.0.1227-linux/bin/sonar-scanner \
+                        -Dsonar.host.url=http://sonarqube:9000 \
+                        -Dsonar.login=fa50b4b70e68e43fc84da9b56232eaaddddef5f4 \
+                        -Dsonar.sources=/home/jenkins/agent/workspace/${JOB_NAME}/src \
+                        -Dsonar.projectBaseDir=/home/jenkins/agent/workspace/${JOB_NAME}/src  \
                     }
                 }
             }
