@@ -33,15 +33,11 @@ def call(body) {
                 stage('Test Unitario') {
                     sh "mvn test -f pom.xml"
                 }
-                stage('Analisis Sonarqube',) {
-                    withSonarQubeEnv {
-                        echo " SONAR GOAL --- $SONAR_MAVEN_GOAL"
-                        sh '''/opt/sonarscanner/sonar-scanner-3.2.0.1227-linux/bin/sonar-scanner \
-                        -Dsonar.host.url=http://sonarqube:9000 \
-                        -Dsonar.login=fa50b4b70e68e43fc84da9b56232eaaddddef5f4 \
-                        -Dsonar.sources=/home/jenkins/agent/workspace/${JOB_NAME}/src \
-                        -Dsonar.projectBaseDir=/home/jenkins/agent/workspace/${JOB_NAME}/src  \
-                    }
+//                stage('Analisis Sonarqube',) {
+//                    withSonarQubeEnv {
+//                        echo " SONAR GOAL --- $SONAR_MAVEN_GOAL"
+//                        sh "mvn $SONAR_MAVEN_GOAL -DskipTests=true"
+//                    }
                 }
             }
         }
