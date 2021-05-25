@@ -33,10 +33,9 @@ def call(body) {
                 stage('Test Unitario') {
                     sh "mvn test -f pom.xml"
                 }
-                stage('Analisis Sonarqube',) {
-                    withSonarQubeEnv {
-                        echo " SONAR GOAL --- $SONAR_MAVEN_GOAL"
-                        sh "mvn $SONAR_MAVEN_GOAL -DskipTests=true"
+        stage('Analisis Sonarqube',) {
+            withSonarQubeEnv (credentialsId: 'fa50b4b70e68e43fc84da9b56232eaaddddef5f4', installationName:'sonar' ) {
+                sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
                     }
                 }
             }
