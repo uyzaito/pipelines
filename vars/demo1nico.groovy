@@ -34,10 +34,10 @@ def call(body) {
                     sh "mvn test -f pom.xml"
                 }
                 stage('Analisis Sonarqube',) {
-                    withSonarQubeEnv ('sonar') {
-//                        echo " SONAR GOAL --- $SONAR_MAVEN_GOAL"
-                        sh "mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar -f ${pomfile} -DskipTests=true"
-                    }
+                   withEnv(["JAVA_HOME=${tool 'java8'}", "PATH+MAVEN=${tool 'maven'}/bin:${env.JAVA_HOME}/bin"]) {
+								withSonarQubeEnv('sonar') {
+									sh "mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar -f ${pomfile} -Djavax.net.ssl.trustStore=/etc/ssl/keystore.jks -Djavax.net.ssl.trustStorePassword=DG2A16JZPSYC"
+					}
                 }
             }
         }
