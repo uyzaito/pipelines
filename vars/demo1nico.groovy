@@ -36,8 +36,8 @@ def call(body) {
                 stage('Analisis Sonarqube',) {    
                     withSonarQubeEnv {
                         echo " SONAR GOAL --- $SONAR_MAVEN_GOAL"
-                        sh "mvn $SONAR_MAVEN_GOAL -f pom.xml"
- //                       sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
+                        //sh "mvn $SONAR_MAVEN_GOAL -f pom.xml"
+                        sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar -f pom.xml'
                    }
                 }
             }
