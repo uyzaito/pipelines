@@ -35,8 +35,8 @@ def call(body) {
                 }
                 stage('Analisis Sonarqube',) {
                     withSonarQubeEnv ('sonar') {
-                        echo " SONAR GOAL --- $SONAR_MAVEN_GOAL"
-                        sh "mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar -DskipTests=true"
+//                        echo " SONAR GOAL --- $SONAR_MAVEN_GOAL"
+                        sh "mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar -f ${pomfile} -DskipTests=true"
                     }
                 }
             }
