@@ -34,7 +34,7 @@ def call(body) {
                     sh "mvn test -f pom.xml"
                 }
                 stage('Analisis Sonarqube',) {
-                    withSonarQubeEnv ('sonarqube', envOnly: true) {
+                    withSonarQubeEnv ('sonarqube') {
                         println ${env.SONAAR_HOST_URL}
 //                        echo " SONAR GOAL --- $SONAR_MAVEN_GOAL"
                         sh "mvn $SONAAR_HOST_URL -DskipTests=true"
