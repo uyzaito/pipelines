@@ -33,12 +33,13 @@ def call(body) {
                 stage('Test Unitario') {
                     sh "mvn test -f pom.xml"
                 }
-//                stage('Analisis Sonarqube',) {
-//                    withSonarQubeEnv {
+                stage('Analisis Sonarqube',) {
+                    withSonarQubeEnv ('sonarqube', envOnly: true) {
+                        println ${env.SONAAR_HOST_URL}
 //                        echo " SONAR GOAL --- $SONAR_MAVEN_GOAL"
-//                        sh "mvn $SONAR_MAVEN_GOAL -DskipTests=true"
-//                    }
-//                }
+                        sh "mvn $SONAAR_HOST_URL -DskipTests=true"
+                    }
+                }
             }
         }
         stage('Publicar'){
