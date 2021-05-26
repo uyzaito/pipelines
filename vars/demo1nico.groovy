@@ -37,7 +37,7 @@ def call(body) {
                     withSonarQubeEnv ('sonar') {
                         echo " SONAR GOAL --- $SONAR_MAVEN_GOAL"
                         //sh "mvn $SONAR_MAVEN_GOAL -f pom.xml"
-                        sh 'mvn clean package sonar:sonar'
+                        sh 'sonar:sonar'
                    }
                 }
             }
