@@ -36,7 +36,7 @@ def call(body) {
                 stage('Analisis Sonarqube',) {
                     def scannerHome = tool 'sonarScanner';
                         withSonarQubeEnv("sonarServer") {
-                        sh mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar-scanner -X \
+                        sh "mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar-scanner -X \
                         -Dsonar.projectKey=com.yourcompany.newapp:honest-corn \
                         -Dsonar.sources=. \
                         -Dsonar.css.node=. \
