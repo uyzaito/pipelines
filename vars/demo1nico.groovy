@@ -36,7 +36,7 @@ def call(body) {
                 stage('Analisis Sonarqube',) {
                     def mavenHome = tool 'maven-3';
                         withSonarQubeEnv("sonarServer") {
-                        sh ${mavenHome}/bin/mvn sonar:sonar
+                        sh "${mavenHome}/bin/mvn sonar:sonar"
                    }
                 }
             }
