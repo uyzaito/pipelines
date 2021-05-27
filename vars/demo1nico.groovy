@@ -36,7 +36,7 @@ def call(body) {
                 stage('Analisis Sonarqube',) {
                     def scannerHome = tool 'sonarScanner';
                         withSonarQubeEnv("sonarServer") {
-                        sh "${tool("sonarScanner")}/bin/sonar-scanner \
+                        sh "${tool("sonarScanner")}/bin/sonar-scanner -X \
                         -Dsonar.projectKey=com.yourcompany.newapp:honest-corn \
                         -Dsonar.sources=. \
                         -Dsonar.css.node=. \
