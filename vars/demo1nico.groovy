@@ -32,8 +32,9 @@ def call(body) {
             parallel: {
                 stage('Test Unitario') {
                     sh "mvn test -f pom.xml"
-        }
+            }
                 stage('Analisis Sonarqube',) {
+                    withSonarQubeEnv ('sonarServer'){
                         echo " SONAR GOAL --- $SONAR_MAVEN_GOAL"
                         //sh "mvn $SONAR_MAVEN_GOAL -f pom.xml"
                         sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonarServer -V'
