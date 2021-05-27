@@ -34,10 +34,14 @@ def call(body) {
                     sh "mvn test -f pom.xml"
             }
                 stage('Analisis Sonarqube',) {
-                    withSonarQubeEnv ('sonarServer'){
-                        echo " SONAR GOAL --- $SONAR_MAVEN_GOAL"
-                        //sh "mvn $SONAR_MAVEN_GOAL -f pom.xml"
-                        sh 'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonarServer -V'
+                    def scannerHome = tool 'sonarScanner';
+                        withSonarQubeEnv("sonarServer") {
+                        sh "${tool("sonarScanner")}/bin/sonar-scanner \
+                        -Dsonar.projectKey=com.yourcompany.newapp:honest-corn \
+                        -Dsonar.sources=. \
+                        -Dsonar.css.node=. \
+                        -Dsonar.host.url=http://sonarqube:9000 \
+                        -Dsonar.login=fa50b4b70e68e43fc84da9b56232eaaddddef5f4"
                    }
                 }
             }
