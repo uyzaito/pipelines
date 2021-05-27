@@ -34,11 +34,9 @@ def call(body) {
                     sh "mvn test -f pom.xml"
             }
                 stage('Analisis Sonarqube',) {
-                    def scannerHome = tool 'sonarScanner';
+                    def mavenHome = tool 'maven-3';
                         withSonarQubeEnv("sonarServer") {
-                        sh "mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar \
-                        -Dsonar.projectKey=com.yourcompany.newapp:honest-corn \
-                        -Dsonar.sources=. "
+                        sh ${mavenHome}/bin/mvn sonar:sonar
                    }
                 }
             }
