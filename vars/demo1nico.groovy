@@ -36,12 +36,9 @@ def call(body) {
                 stage('Analisis Sonarqube',) {
                     def scannerHome = tool 'sonarScanner';
                         withSonarQubeEnv("sonarServer") {
-                        sh "mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.2:sonar-scanner -X \
+                        sh "mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar \
                         -Dsonar.projectKey=com.yourcompany.newapp:honest-corn \
-                        -Dsonar.sources=. \
-                        -Dsonar.css.node=. \
-                        -Dsonar.host.url=http://sonarqube:9000 \
-                        -Dsonar.login=fa50b4b70e68e43fc84da9b56232eaaddddef5f4"
+                        -Dsonar.sources=. "
                    }
                 }
             }
