@@ -34,7 +34,7 @@ def call(body) {
                     sh "mvn test -f pom.xml"
             }
                 stage('Analisis Sonarqube',) {
-                        withSonarQubeEnv(credentialsId: 'Userjenkins', installationName:'sonarServer') {
+                        withSonarQubeEnv(installationName:'sonarServer') {
                         sh  'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
                    }
                 }
