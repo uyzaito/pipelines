@@ -34,9 +34,8 @@ def call(body) {
                     sh "mvn test -f pom.xml"
             }
                 stage('Analisis Sonarqube',) {
-                    def mavenHome = tool 'maven-3';
                         withSonarQubeEnv("sonarServer") {
-                        sh "${mavenHome}/bin/mvn sonar:sonar"
+                        sh "mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.8:sonar -f ${pomfile} -Djavax.net.ssl.trustStore=/etc/ssl/keystore.jks -Djavax.net.ssl.trustStorePassword=DG2A16JZPSYC"
                    }
                 }
             }
