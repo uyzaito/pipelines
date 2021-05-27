@@ -32,11 +32,11 @@ def call(body) {
             parallel: {
                 stage('Test Unitario') {
                     sh "mvn test -f pom.xml"
-                }
-                stage('Analisis Sonarqube',) {
-                    def scannerHome = tool 'sonarSanner';
-                    withSonarQubeEnv ('sonarServer') {
-                        sh '${sonnarHome}/bin/sonar-scanner -Dsonar.projectKey=com.yourcompany.newapp:honest-corn -Dsonar.sources=.'
+        }
+        stage('Analisis Sonarqube',) {
+            def scannerHome = tool 'sonarSanner';
+            withSonarQubeEnv ('sonarServer') {
+                sh '${sonnarHome}/bin/sonar-scanner -Dsonar.projectKey=com.yourcompany.newapp:honest-corn -Dsonar.sources=.'
                    }
                 }
             }
