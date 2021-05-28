@@ -41,6 +41,7 @@ def call(body) {
                     step {
                         withSonarQubeEnv('sonarServer') {
                             sh "${scannerHome}/bin/sonar-scanner"
+                        }
                     }
 
                 }
