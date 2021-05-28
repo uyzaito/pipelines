@@ -39,7 +39,7 @@ def call(body) {
                     }
                     
                     step {
-                        withSonarQubeEnv('sonarServer') {
+                        withSonarQubeEnv('sonarServer',envOnly: true) {
                             sh "${scannerHome}/bin/sonar-scanner"
                         }
                     }
