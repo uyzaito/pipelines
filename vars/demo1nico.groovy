@@ -34,16 +34,9 @@ def call(body) {
                     sh "mvn test -f pom.xml"
             }
                 stage('Analisis Sonarqube',) {
-                    environment {
-                        scannerHome = tool 'SonarQubeScanner'
-                    }
-                    
-                    step {
-                        withSonarQubeEnv('sonarServer',envOnly: true) {
-                            sh "${scannerHome}/bin/sonar-scanner"
-                        }
-                    }
-
+                        withSonarQubeEnv(installationName:'sonarServer') {
+                        sh  'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar -X'
+                   }
                 }
             }
         }
