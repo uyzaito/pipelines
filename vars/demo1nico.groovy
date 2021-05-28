@@ -52,7 +52,7 @@ def call(body) {
 //                   }
 //                }
 //            }
-        }
+//        }
         stage('Publicar'){
             NEXUS_VERSION = "nexus3"
             NEXUS_PROTOCOL = "http"
