@@ -35,10 +35,10 @@ def call(body) {
             }
             stage('Sonarqube') {
                 environment {
-                    scannerHome = tool 'SonarQubeScanner'
+                    scannerHome = tool 'sonarScanner'
                 }
                     steps {
-                        withSonarQubeEnv('sonarqube') {
+                        withSonarQubeEnv('sonarServer') {
                         sh "${scannerHome}/bin/sonar-scanner"
                 }
                     timeout(time: 10, unit: 'MINUTES') {
