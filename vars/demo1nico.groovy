@@ -35,7 +35,7 @@ def call(body) {
             }
                 stage('Analisis Sonarqube',) {
                         withSonarQubeEnv(installationName:'sonarServer') {
-                        sh  'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar -X'
+                        sh  'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
                    }
                 }
             }
