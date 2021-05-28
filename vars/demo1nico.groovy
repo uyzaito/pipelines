@@ -33,26 +33,19 @@ def call(body) {
                 stage('Test Unitario') {
                     sh "mvn test -f pom.xml"
             }
-            stage('Sonarqube') {
-                environment {
-                    scannerHome = tool 'sonarScanner'
-                }
-                    steps {
+                stage('Analisis Sonarqube',) {
+                    environment {
+                        scannerHome = tool 'SonarQubeScanner'
+                    }
+                    
+                    step {
                         withSonarQubeEnv('sonarServer') {
-                        sh "${scannerHome}/bin/sonar-scanner"
-                }
-                    timeout(time: 10, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
+                            sh "${scannerHome}/bin/sonar-scanner"
+                    }
+
                 }
             }
         }
-//                stage('Analisis Sonarqube',) {
-//                        withSonarQubeEnv(installationName:'sonarServer') {
-//                        sh  'mvn org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
-//                   }
-//                }
-//            }
-//        }
         stage('Publicar'){
             NEXUS_VERSION = "nexus3"
             NEXUS_PROTOCOL = "http"
