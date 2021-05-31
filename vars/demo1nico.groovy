@@ -87,7 +87,7 @@ def call(body) {
                 oc project ${pipelineParams.ambiente}
                 oc new-build --binary=true --name=${IMAGE} --image-stream=redhat-openjdk18-openshift
                 oc start-build ${IMAGE} --from-dir=./ocp --follow
-                oc new-app ocp/deployments/* --name=${IMAGE} 
+                oc new-app docker-registry.default.svc:5000/grep-cicd/${IMAGE}-${VERSION}
                 oc expose svc ${IMAGE}
             """
         }
