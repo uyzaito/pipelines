@@ -84,8 +84,8 @@ def call(body) {
             sh """
                 mkdir -p ocp/deployments
                 cp target/${IMAGE}-${VERSION}.${PACKAGE} ocp/deployments/
-                oc project ${pipelineParams.ambiente}
                 oc whoami
+                oc project ${pipelineParams.ambiente}
                 oc new-build --binary=true --name=${IMAGE} --image-stream=redhat-openjdk18-openshift
                 oc start-build ${IMAGE} --from-dir=./ocp --follow
                 oc new-app ${IMAGE}
