@@ -84,7 +84,7 @@ def call(body) {
         stage('s2i build image'){
             openshift.withCluster() {
             openshift.withProject("${pipelineParams.ambiente}") {
-                def imageStreamSelector = openshift.selector("${IMAGE}")
+                def imageStreamSelector = openshift.selector("dc","${IMAGE}")
                 def imageStreamExists = imageStreamSelector.exists()
                 if(!imageStreamExists) {
                     echo "No existe la imagen ${IMAGE} en el ambiente actual"                 
@@ -99,6 +99,7 @@ def call(body) {
                     """
                 }else{
                     echo "Si existe la imagen ${IMAGE} en el ambiente actual"
+
                 }
             }
             
