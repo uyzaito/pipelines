@@ -32,7 +32,7 @@ def call(body) {
             parallel: {
                 stage('Test Unitario') {
                     sh "mvn test -f pom.xml"
-            }
+                }
                 stage('Analisis Sonarqube',) {
                         withSonarQubeEnv(installationName:'sonarServer') {
                         sh  'mvn jacoco:report org.sonarsource.scanner.maven:sonar-maven-plugin:3.7.0.1746:sonar'
