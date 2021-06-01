@@ -36,16 +36,16 @@ def call(body) {
                 stage('Analisis Sonarqube',) {
                     withSonarQubeEnv {
                         echo " SONAR GOAL --- $SONAR_MAVEN_GOAL"
-                        sh "mvn $SONAR_MAVEN_GOAL -DskipTests=true"
+                        sh "mvn jacoco:report $SONAR_MAVEN_GOAL"
                     }
                 }
             }
         }
         stage('Publicar'){
             NEXUS_VERSION = "nexus3"
-            NEXUS_PROTOCOL = "https"
+            NEXUS_PROTOCOL = "http"
             NEXUS_URL = "${pipelineParams.nexusurl}"
-            NEXUS_REPOSITORY = "maven-releases"
+            NEXUS_REPOSITORY = "grep-cicd"
             NEXUS_CREDENTIAL_ID = "nexus-credentials"
                     pom = readMavenPom file: "pom.xml";
                     filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
@@ -81,17 +81,33 @@ def call(body) {
                         error "*** File: ${artifactPath}, could not be found";
                     }
         }   
-        stage('s2i'){                 
-            sh """
-                mkdir -p ocp/deployments
-                cp target/${IMAGE}-${VERSION}.${PACKAGE} ocp/deployments/
-                oc whoami
-                oc project ${pipelineParams.ambiente}
-                oc new-build --binary=true --name=${IMAGE} --image-stream=redhat-openjdk18-openshift
-                oc start-build ${IMAGE} --from-dir=./ocp --follow
-                oc new-app ${IMAGE}
-                oc expose svc/${IMAGE}
-            """
+        stage('s2i build image'){
+            openshift.withCluster() {
+            openshift.withProject("${pipelineParams.ambiente}") {
+                def imageStreamSelector = openshift.selector("${IMAGE}")
+                def imageStreamExists = imageStreamSelector.exists()
+                if(!imageStreamExists) {
+                    echo "No existe la imagen ${IMAGE} en el ambiente actual"                 
+                    sh """
+                        mkdir -p ocp/deployments
+                        cp target/${IMAGE}-${VERSION}.${PACKAGE} ocp/deployments/
+                        oc project ${pipelineParams.ambiente}
+                        oc new-build --binary=true --name=${IMAGE} --image-stream=redhat-openjdk18-openshift
+                        oc start-build ${IMAGE} --from-dir=./ocp --follow
+                        oc new-app ${IMAGE}
+                        oc expose svc/${IMAGE}
+                    """
+                }else{
+                    echo "Si existe la imagen ${IMAGE} en el ambiente actual"
+                }
+            
+        }
+        stage ('Deploy to test') {
+        //sh "oc tag app-demo:latest app-demo:${params.versionTag}"
+        sh "oc tag ${IMAGE}:latest ${IMAGE}:${VERSION}"
+        //sh "oc tag devbox-cicd/app-demo:${params.versionTag} devbox-dev/app-demo:${params.versionTag}"
+        //sh "oc tag devbox-dev/app-demo:${params.versionTag} devbox-dev/app-demo:latest"
+        openshiftDeploy(depCfg: "${IMAGE}", namespace: "${pipelineParams.ambiente}", waitTime: '10', waitUnit: 'min')
         }
     }
 }
