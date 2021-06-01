@@ -36,7 +36,7 @@ def call(body) {
                 stage('Analisis Sonarqube',) {
                     withSonarQubeEnv {
                         echo " SONAR GOAL --- $SONAR_MAVEN_GOAL"
-                        sh "mvn jacoco:report $SONAR_MAVEN_GOAL"
+                        sh "mvn $SONAR_MAVEN_GOAL"
                     }
                 }
             }
