@@ -100,7 +100,9 @@ def call(body) {
                 }else{
                     echo "Si existe la imagen ${IMAGE} en el ambiente actual"
                 }
+            }
             
+            }            
         }
         stage ('Deploy to test') {
         //sh "oc tag app-demo:latest app-demo:${params.versionTag}"
