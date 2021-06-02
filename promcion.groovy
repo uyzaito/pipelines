@@ -87,7 +87,7 @@ def call(body) {
                 def imageStreamSelector = openshift.selector("dc","${IMAGE}")
                 def imageStreamExists = imageStreamSelector.exists()
                 if(!imageStreamExists) {
-                    echo "No existe la imagen ${IMAGE} en el ambiente actual"                 
+                    echo "No existe la imagen ${IMAGE} en el ambiente ${pipelineParams.ambiente}"                 
                     sh """
                         mkdir -p ocp/deployments
                         cp target/${IMAGE}-${VERSION}.${PACKAGE} ocp/deployments/
@@ -95,12 +95,16 @@ def call(body) {
                         oc new-build --binary=true --name=${IMAGE} --image-stream=redhat-openjdk18-openshift
                         oc start-build ${IMAGE} --from-dir=./ocp --follow
                         oc new-app ${IMAGE}
-                        sh "oc tag ${IMAGE}:latest ${IMAGE}:${VERSION}"
                         oc expose svc/${IMAGE}
                     """
                 }else{
-                    echo "Si existe la imagen ${IMAGE} en el ambiente actual"
-                    sh "oc start-build ${IMAGE} --from-dir=./ocp --follow"
+                    echo "Si existe la imagen ${IMAGE} en el ambiente ${pipelineParams.ambiente}"
+                    sh """
+                        mkdir -p ocp/deployments
+                        cp target/${IMAGE}-${VERSION}.${PACKAGE} ocp/deployments/
+                        oc project ${pipelineParams.ambiente}
+                        oc start-build ${IMAGE} --from-dir=./ocp --follow
+                    """
                     openshiftDeploy(depCfg: "${IMAGE}", namespace: "${pipelineParams.ambiente}", waitTime: '10', waitUnit: 'min')
                 }
             }
@@ -108,7 +112,6 @@ def call(body) {
             }            
         }
         stage ('Etiquetado') {
-        //sh "oc tag app-demo:latest app-demo:${params.versionTag}"
         sh """
             oc tag ${IMAGE}:latest ${IMAGE}:${VERSION}
             oc tag ${IMAGE}:latest grep-staging/${IMAGE}:${VERSION}
