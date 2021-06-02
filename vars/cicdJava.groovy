@@ -104,8 +104,7 @@ def call(body) {
                         cp target/${IMAGE}-${VERSION}.${PACKAGE} ocp/deployments/
                         oc project ${pipelineParams.ambiente}
                         oc start-build ${IMAGE} --from-dir=./ocp --follow
-                    """
-                    //openshiftDeploy(depCfg: "${IMAGE}", namespace: "${pipelineParams.ambiente}", waitTime: '10', waitUnit: 'min')
+                    """                    
                 }
             }
             
@@ -115,7 +114,7 @@ def call(body) {
         sh """
             oc tag ${IMAGE}:latest ${IMAGE}:${VERSION}
             oc tag ${IMAGE}:latest grep-staging/${IMAGE}:${VERSION}
-            oc tag ${IMAGE}:latest grep-integracion${IMAGE}:${VERSION}
+            oc tag ${IMAGE}:latest grep-integracion/${IMAGE}:${VERSION}
             oc tag ${IMAGE}:latest grep-prod/${IMAGE}:${VERSION}
         """
         }
