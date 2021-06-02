@@ -105,7 +105,7 @@ def call(body) {
                         oc project ${pipelineParams.ambiente}
                         oc start-build ${IMAGE} --from-dir=./ocp --follow
                     """
-                    openshiftDeploy(depCfg: "${IMAGE}", namespace: "${pipelineParams.ambiente}", waitTime: '10', waitUnit: 'min')
+                    //openshiftDeploy(depCfg: "${IMAGE}", namespace: "${pipelineParams.ambiente}", waitTime: '10', waitUnit: 'min')
                 }
             }
             
