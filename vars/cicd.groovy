@@ -5,7 +5,7 @@ def call(body) {
 	body()
 
     node ("${pipelineParams.node}") {
-        stage('Clonar') {
+        stage('Clonado') {
           checkout([$class: 'GitSCM',
           branches: [[name: "${pipelineParams.branch}"]],
           extensions: [],
@@ -25,7 +25,7 @@ def call(body) {
                 echo "Name      --- $NAME"
                 echo "Version   --- $VERSION"
         }
-        stage('Construir') {
+        stage('Construccion') {
             sh "mvn clean install -Dmaven.test.skip=true"
         }
         stage ('Tests') {
@@ -33,7 +33,7 @@ def call(body) {
                 stage('Test Unitario') {
                     sh "mvn test -f pom.xml"
                 }
-                stage('Analisis Sonarqube',) {
+                stage('Analisis en Sonarqube',) {
                     withSonarQubeEnv {
                         echo " SONAR GOAL --- $SONAR_MAVEN_GOAL"
                         sh "mvn $SONAR_MAVEN_GOAL"
@@ -41,7 +41,7 @@ def call(body) {
                 }
             }
         }
-        stage('Publicar'){
+        stage('Publicar en Nexus'){
             NEXUS_VERSION = "nexus3"
             NEXUS_PROTOCOL = "http"
             NEXUS_URL = "${pipelineParams.nexusurl}"
@@ -81,13 +81,13 @@ def call(body) {
                         error "*** File: ${artifactPath}, could not be found";
                     }
         }   
-        stage('s2i build image'){
+        stage('Construccion s2i & despliegue'){
             openshift.withCluster() {
             openshift.withProject("${pipelineParams.ambiente}") {
                 def imageStreamSelector = openshift.selector("dc","${IMAGE}")
                 def imageStreamExists = imageStreamSelector.exists()
                 if(!imageStreamExists) {
-                    echo "No existe la imagen ${IMAGE} en el ambiente actual"                 
+                    echo "No existe la imagen ${IMAGE} en el ambiente ${pipelineParams.ambiente}"                 
                     sh """
                         mkdir -p ocp/deployments
                         cp target/${IMAGE}-${VERSION}.${PACKAGE} ocp/deployments/
@@ -95,12 +95,16 @@ def call(body) {
                         oc new-build --binary=true --name=${IMAGE} --image-stream=redhat-openjdk18-openshift
                         oc start-build ${IMAGE} --from-dir=./ocp --follow
                         oc new-app ${IMAGE}
-                        sh "oc tag ${IMAGE}:latest ${IMAGE}:${VERSION}"
                         oc expose svc/${IMAGE}
                     """
                 }else{
-                    echo "Si existe la imagen ${IMAGE} en el ambiente actual"
-                    sh "oc start-build ${IMAGE} --from-dir=./ocp --follow"
+                    echo "Si existe la imagen ${IMAGE} en el ambiente ${pipelineParams.ambiente}"
+                    sh """
+                        mkdir -p ocp/deployments
+                        cp target/${IMAGE}-${VERSION}.${PACKAGE} ocp/deployments/
+                        oc project ${pipelineParams.ambiente}
+                        oc start-build ${IMAGE} --from-dir=./ocp --follow
+                    """
                     openshiftDeploy(depCfg: "${IMAGE}", namespace: "${pipelineParams.ambiente}", waitTime: '10', waitUnit: 'min')
                 }
             }
@@ -108,7 +112,6 @@ def call(body) {
             }            
         }
         stage ('Etiquetado') {
-        //sh "oc tag app-demo:latest app-demo:${params.versionTag}"
         sh """
             oc tag ${IMAGE}:latest ${IMAGE}:${VERSION}
             oc tag ${IMAGE}:latest grep-staging/${IMAGE}:${VERSION}
