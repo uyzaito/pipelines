@@ -45,7 +45,7 @@ def call(body) {
             NEXUS_VERSION = "nexus3"
             NEXUS_PROTOCOL = "http"
             NEXUS_URL = "${pipelineParams.nexusurl}"
-            NEXUS_REPOSITORY = "grep-cicd"
+            NEXUS_REPOSITORY = "${pipelineParams.nexusrepo}"
             NEXUS_CREDENTIAL_ID = "nexus-credentials"
                     pom = readMavenPom file: "pom.xml";
                     filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
