@@ -84,9 +84,9 @@ def call(body) {
         stage('Construccion s2i & despliegue'){
             openshift.withCluster() {
             openshift.withProject("${pipelineParams.ambiente}") {
-                def imageStreamSelector = openshift.selector("dc","${IMAGE}")
-                def imageStreamExists = imageStreamSelector.exists()
-                if(!imageStreamExists) {
+                def appSelector = openshift.selector("dc","${IMAGE}")
+                def appExists = appSelector.exists()
+                if(!appExists) {
                     echo "No existe la imagen ${IMAGE} en el ambiente ${pipelineParams.ambiente}"                 
                     sh """
                         mkdir -p ocp/deployments
