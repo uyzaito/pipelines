@@ -95,22 +95,26 @@ def call(body) {
                         oc new-build --binary=true --name=${IMAGE} --image-stream=redhat-openjdk18-openshift
                         oc start-build ${IMAGE} --from-dir=./ocp --follow
                         oc new-app ${IMAGE}
+                        sh "oc tag ${IMAGE}:latest ${IMAGE}:${VERSION}"
                         oc expose svc/${IMAGE}
                     """
                 }else{
                     echo "Si existe la imagen ${IMAGE} en el ambiente actual"
-
+                    sh "oc start-build ${IMAGE} --from-dir=./ocp --follow"
+                    openshiftDeploy(depCfg: "${IMAGE}", namespace: "${pipelineParams.ambiente}", waitTime: '10', waitUnit: 'min')
                 }
             }
             
             }            
         }
-        stage ('Deploy to test') {
+        stage ('Etiquetado') {
         //sh "oc tag app-demo:latest app-demo:${params.versionTag}"
-        sh "oc tag ${IMAGE}:latest ${IMAGE}:${VERSION}"
-        //sh "oc tag devbox-cicd/app-demo:${params.versionTag} devbox-dev/app-demo:${params.versionTag}"
-        //sh "oc tag devbox-dev/app-demo:${params.versionTag} devbox-dev/app-demo:latest"
-        openshiftDeploy(depCfg: "${IMAGE}", namespace: "${pipelineParams.ambiente}", waitTime: '10', waitUnit: 'min')
+        sh """
+            oc tag ${IMAGE}:latest ${IMAGE}:${VERSION}
+            oc tag ${IMAGE}:latest grep-staging/${IMAGE}:${VERSION}
+            oc tag ${IMAGE}:latest grep-integracion${IMAGE}:${VERSION}
+            oc tag ${IMAGE}:latest grep-prod/${IMAGE}:${VERSION}
+        """
         }
     }
 }
