@@ -5,7 +5,7 @@ def call(body) {
 	body()
 
     node ("${pipelineParams.node}") {
-        stage('Clonar') {
+        stage('Clonado') {
           checkout([$class: 'GitSCM',
           branches: [[name: "${pipelineParams.branch}"]],
           extensions: [],
@@ -25,7 +25,7 @@ def call(body) {
                 echo "Name      --- $NAME"
                 echo "Version   --- $VERSION"
         }
-        stage('Construir') {
+        stage('Construccion') {
             sh "mvn clean install -Dmaven.test.skip=true"
         }
         stage ('Tests') {
@@ -33,7 +33,7 @@ def call(body) {
                 stage('Test Unitario') {
                     sh "mvn test -f pom.xml"
                 }
-                stage('Analisis Sonarqube',) {
+                stage('Analisis en Sonarqube',) {
                     withSonarQubeEnv {
                         echo " SONAR GOAL --- $SONAR_MAVEN_GOAL"
                         sh "mvn $SONAR_MAVEN_GOAL"
@@ -41,7 +41,7 @@ def call(body) {
                 }
             }
         }
-        stage('Publicar'){
+        stage('Publicar en Nexus'){
             NEXUS_VERSION = "nexus3"
             NEXUS_PROTOCOL = "http"
             NEXUS_URL = "${pipelineParams.nexusurl}"
@@ -81,7 +81,7 @@ def call(body) {
                         error "*** File: ${artifactPath}, could not be found";
                     }
         }   
-        stage('s2i build image'){
+        stage('Construccion s2i & despliegue'){
             openshift.withCluster() {
             openshift.withProject("${pipelineParams.ambiente}") {
                 def imageStreamSelector = openshift.selector("dc","${IMAGE}")
