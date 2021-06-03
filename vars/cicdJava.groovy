@@ -6,10 +6,10 @@ def call(body) {
 
     node ("${pipelineParams.node}") {
         stage('Clonado') {
-          checkout([$class: 'GitSCM',
-          branches: [[name: "${pipelineParams.branch}"]],
-          extensions: [],
-          userRemoteConfigs: [[url: "${pipelineParams.repo}"]]])
+            checkout([$class: 'GitSCM',
+            branches: [[name: "${pipelineParams.branch}"]],
+            extensions: [],
+            userRemoteConfigs: [[url: "${pipelineParams.repo}"]]])
         }
         stage('Lectura de Pom') {
                 IMAGE = readMavenPom(file: "pom.xml").getArtifactId()
@@ -111,12 +111,12 @@ def call(body) {
             }            
         }
         stage ('Etiquetado') {
-        sh """
-            oc tag ${IMAGE}:latest ${IMAGE}:${VERSION}
-            oc tag ${IMAGE}:latest grep-staging/${IMAGE}:${VERSION}
-            oc tag ${IMAGE}:latest grep-integracion/${IMAGE}:${VERSION}
-            oc tag ${IMAGE}:latest grep-prod/${IMAGE}:${VERSION}
-        """
+            sh """
+                oc tag ${IMAGE}:latest ${IMAGE}:${VERSION}
+                oc tag ${IMAGE}:latest grep-staging/${IMAGE}:${VERSION}
+                oc tag ${IMAGE}:latest grep-integracion/${IMAGE}:${VERSION}
+                oc tag ${IMAGE}:latest grep-prod/${IMAGE}:${VERSION}
+            """
         }
     }
 }
