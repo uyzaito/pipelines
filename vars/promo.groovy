@@ -9,7 +9,9 @@ def call(body) {
         def IMAGE = "${pipelineParams.IMAGE}"
     }
 
-    echo "ESTAMOS DESPLEGANDO LA IMAGEN $IMAGE Y LA VERSION $VERSION EN EL AMBIENTE $pipelineParams.ambiente"
+    echo sh(script: 'env|sort', returnStdout: true)
+
+    //echo "ESTAMOS DESPLEGANDO LA IMAGEN $IMAGE Y LA VERSION $VERSION EN EL AMBIENTE $pipelineParams.ambiente"
 
     node ("${pipelineParams.node}") {
         stage ('Aceptacion de promocion') {
