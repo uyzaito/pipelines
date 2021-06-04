@@ -8,7 +8,7 @@ def call(body) {
         stage ('Aceptacion de promocion') {
             try {
                 timeout(time:7, unit:'DAYS') {
-                    userInput = input(
+                    def userInput = input(
                         id: 'userInput',
                         message: "¿ APRUEBA LA EL DESPLIEGUE DE ${IMAGE} VERSION ${VERSION} EN EL AMBIENTE ${pipelineParams.ambiente} ?",
                         parameters: [[$class: 'BooleanParameterDefinition', defaultValue: false, description: '', name: 'acepta']]
