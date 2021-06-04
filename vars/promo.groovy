@@ -43,6 +43,7 @@ def call(body) {
             stage ('Disparador') {            
                 build(
                     job: "${pipelineParams.tareaHija}",
+                    wait: false,
                     parameters: [
                             [
                                     $class: 'StringParameterValue',
