@@ -18,10 +18,9 @@ def call(body) {
                     def userInput = input(
                         id: 'userInput',
                         message: "¿ APRUEBA LA EL DESPLIEGUE DE ${IMAGE} VERSION ${VERSION} EN EL AMBIENTE ${pipelineParams.ambiente} ?",
-                        parameters: [[$class: 'BooleanParameterDefinition', defaultValue: false, description: '', name: 'acepta']]
-
-                        echo " userInput.acepta $userInput.acepta"
+                        parameters: [[$class: 'BooleanParameterDefinition', defaultValue: false, description: '', name: 'acepta']]                        
                     )
+                    echo "----- userInput.acepta $userInput.acepta"
                 }    
             } catch (error) {
                 echo "Error con input de aceptación----- error" 
