@@ -124,8 +124,7 @@ def call(body) {
                     userInput = input(
                         id: 'userInput',
                         message: "¿ APRUEBA LA EL DESPLIEGUE DE ${IMAGE}:${VERSION} EN EL SIGUENTE AMBIENTE ? , ATENCION !!!! TENGA EN CUENTA QUE UD ESTA EVALUANDO AHORA DESDE ${pipelineParams.ambiente}",
-                        parameters: [
-                        [$class: 'BooleanParameterDefinition', defaultValue: false, description: '', name: 'acepta']
+                        parameters: [[$class: 'BooleanParameterDefinition', defaultValue: false, description: '', name: 'acepta']]
                     )
                 }    
             } catch (error) {
