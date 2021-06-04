@@ -4,6 +4,11 @@ def call(body) {
 	body.delegate = pipelineParams
 	body()
 
+    if (IMAGE == null){
+        VERSION = "${params.VERSION}"
+        IMAGE = "${pipelineParams.IMAGE}"
+    }
+
     node ("${pipelineParams.node}") {
         stage ('Aceptacion de promocion') {
             try {
