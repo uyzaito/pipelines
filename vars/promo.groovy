@@ -4,7 +4,7 @@ def call(body) {
 	body.delegate = pipelineParams
 	body()
 
-    if (IMAGE == null){
+    if ("$IMAGE" == null){
         def VERSION = "${params.VERSION}"
         def IMAGE = "${pipelineParams.IMAGE}"
     }
