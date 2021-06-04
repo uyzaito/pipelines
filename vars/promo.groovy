@@ -4,10 +4,10 @@ def call(body) {
 	body.delegate = pipelineParams
 	body()
 
-    if (IMAGE == null){
-        VERSION = "${params.VERSION}"
-        IMAGE = "${pipelineParams.IMAGE}"
-    }
+    //if (IMAGE == null){
+        def VERSION = "${params.VERSION}"
+        def IMAGE = "${pipelineParams.IMAGE}"
+    //}
 
     echo "ESTAMOS DESPLEGANDO LA IMAGEN $IMAGE Y LA VERSION $VERSION EN EL AMBIENTE $pipelineParams.ambiente"
 
