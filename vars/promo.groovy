@@ -13,6 +13,7 @@ def call(body) {
 
     node ("${pipelineParams.node}") {
         stage ('Aceptacion de promocion') {
+            try {
                 timeout(time:7, unit:'DAYS') {
                     userInput = input(
                         id: 'userInput',
