@@ -118,25 +118,22 @@ def call(body) {
                 oc tag ${IMAGE}:latest grep-prod/${IMAGE}:${VERSION}
             """
         }
-        stage ('Disparador') {
-            if (pipelineParams.ambiente != "grep-prod") {
-                build(
-                    job: "${pipelineParams.tareaHija}",
-                    wait: wait.toBoolean(),
-                    parameters: [
-                            [
-                                    $class: 'StringParameterValue',
-                                    name: 'IMAGE',
-                                    value: "${IMAGE}",
-                            ],
-                            [
-                                    $class: 'StringParameterValue',
-                                    name: 'VERSION',
-                                    value: "${VERSION}",
-                            ],
-                    ],
-                )
-            }
+        stage ('Disparador') {           
+            build(
+                job: "${pipelineParams.tareaHija}",
+                parameters: [
+                        [
+                                $class: 'StringParameterValue',
+                                name: 'IMAGE',
+                                value: "${IMAGE}",
+                        ],
+                        [
+                                $class: 'StringParameterValue',
+                                name: 'VERSION',
+                                value: "${VERSION}",
+                        ],
+                ],
+            )            
         }
     }
 }
