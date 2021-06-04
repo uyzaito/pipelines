@@ -4,10 +4,10 @@ def call(body) {
 	body.delegate = pipelineParams
 	body()
 
-    //if (IMAGE == null){
+    if (IMAGE == null){
         def VERSION = "${params.VERSION}"
         def IMAGE = "${pipelineParams.IMAGE}"
-    //}
+    }
 
     echo "ESTAMOS DESPLEGANDO LA IMAGEN $IMAGE Y LA VERSION $VERSION EN EL AMBIENTE $pipelineParams.ambiente"
 
@@ -19,6 +19,8 @@ def call(body) {
                         id: 'userInput',
                         message: "¿ APRUEBA LA EL DESPLIEGUE DE ${IMAGE} VERSION ${VERSION} EN EL AMBIENTE ${pipelineParams.ambiente} ?",
                         parameters: [[$class: 'BooleanParameterDefinition', defaultValue: false, description: '', name: 'acepta']]
+
+                        echo " userInput.acepta $userInput.acepta"
                     )
                 }    
             } catch (error) {
@@ -27,7 +29,6 @@ def call(body) {
         }
         if ( userInput.acepta == true ) { 
             stage('Promocion'){
-                // iteracion por ambientes con aprobacion 
                 openshift.withCluster() {
                     openshift.withProject("${pipelineParams.ambiente}") {
                         def imageStreamSelector = openshift.selector("dc","${IMAGE}")
