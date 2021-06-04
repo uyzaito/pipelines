@@ -9,12 +9,11 @@ def call(body) {
         def IMAGE = "${pipelineParams.IMAGE}"
     }
 
-    echo sh(script: 'env|sort', returnStdout: true)
-
     //echo "ESTAMOS DESPLEGANDO LA IMAGEN $IMAGE Y LA VERSION $VERSION EN EL AMBIENTE $pipelineParams.ambiente"
 
     node ("${pipelineParams.node}") {
         stage ('Aceptacion de promocion') {
+            echo sh(script: 'env', returnStdout: true)
             try {
                 timeout(time:7, unit:'DAYS') {
                     userInput = input(
