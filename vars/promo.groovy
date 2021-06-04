@@ -4,7 +4,7 @@ def call(body) {
 	body.delegate = pipelineParams
 	body()
 
-    if (!binding.variables.containsKey("IMAGE")){
+    if (env.IMAGE == null){
         def VERSION = "${params.VERSION}"
         def IMAGE = "${pipelineParams.IMAGE}"
     }
@@ -13,8 +13,6 @@ def call(body) {
 
     node ("${pipelineParams.node}") {
         stage ('Aceptacion de promocion') {
-            echo sh(script: 'env', returnStdout: true)
-            try {
                 timeout(time:7, unit:'DAYS') {
                     userInput = input(
                         id: 'userInput',
