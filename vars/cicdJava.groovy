@@ -118,21 +118,8 @@ def call(body) {
                 oc tag ${IMAGE}:latest grep-prod/${IMAGE}:${VERSION}
             """
         }
-        stage ('Aceptacion de promocion') {
-            try {
-                timeout(time:7, unit:'DAYS') {
-                    userInput = input(
-                        id: 'userInput',
-                        message: "¿ APRUEBA LA EL DESPLIEGUE DE ${IMAGE}:${VERSION} EN EL SIGUENTE AMBIENTE ? , ATENCION !!!! TENGA EN CUENTA QUE UD ESTA EVALUANDO AHORA DESDE ${pipelineParams.ambiente}",
-                        parameters: [[$class: 'BooleanParameterDefinition', defaultValue: false, description: '', name: 'acepta']]
-                    )
-                }    
-            } catch (error) {
-                echo "Error con input de aceptación----- error" 
-            }        
-        }
         stage ('Disparador') {
-            if ( userInput.acepta == true ) {
+            if (pipelineParams.ambiente != "grep-prod") {
                 build(
                     job: "${pipelineParams.tareaHija}",
                     wait: wait.toBoolean(),
