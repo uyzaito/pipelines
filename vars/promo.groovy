@@ -35,7 +35,7 @@ def call(body) {
                         sh """
                             oc project ${pipelineParams.ambiente}
                             oc new-app ${IMAGE}:${VERSION}
-                            oc expose svc/${IMAGE}:${VERSION}
+                            oc expose svc/${IMAGE}
                         """
                     }else{
                         echo "Si existe la imagen ${IMAGE} en el ambiente ${pipelineParams.ambiente}"
