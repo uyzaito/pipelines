@@ -34,10 +34,9 @@ def call(body) {
                         echo "No existe la imagen ${IMAGE} en el ambiente ${pipelineParams.ambiente}"                 
                         sh """
                             oc project ${pipelineParams.ambiente}
-                            oc new-app ${IMAGE}
-                            oc expose svc/${IMAGE}
+                            oc new-app ${IMAGE}:${VERSION}
+                            oc expose svc/${IMAGE}:${VERSION}
                         """
-                        openshiftDeploy(depCfg: "${IMAGE}:${VERSION}", namespace: "${pipelineParams.ambiente}", waitTime: '10', waitUnit: 'min')
                     }else{
                         echo "Si existe la imagen ${IMAGE} en el ambiente ${pipelineParams.ambiente}"
                         openshiftDeploy(depCfg: "${IMAGE}:${VERSION}", namespace: "${pipelineParams.ambiente}", waitTime: '10', waitUnit: 'min')
