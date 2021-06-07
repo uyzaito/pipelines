@@ -39,7 +39,7 @@ def call(body) {
                         """
                     }else{
                         echo "Si existe la imagen ${IMAGE} en el ambiente ${pipelineParams.ambiente}"
-                        sh "oc deploy ${IMAGE}:${VERSION}"
+                        sh "oc rollout ${VERSION} dc/ ${IMAGE}"
                         //openshiftDeploy(depCfg: "${IMAGE}:${VERSION}", namespace: "${pipelineParams.ambiente}", waitTime: '10', waitUnit: 'min')
                     }
                 }                
