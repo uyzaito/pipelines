@@ -4,11 +4,11 @@ def call(body) {
 	body.delegate = pipelineParams
 	body()
 
-    /*if ("$env.IMAGE" == null){
+    //if ("$env.IMAGE" == null){
         echo "SETEOS DE VARIABLES MANUAL VERSION = $VERSION"
         def VERSION = "${params.VERSION}"
         def IMAGE = "${pipelineParams.IMAGE}"
-    }*/
+    //}
 
     echo "ESTAMOS DESPLEGANDO LA IMAGEN $pipelineParams.IMAGE Y LA VERSION $params.VERSION EN EL AMBIENTE $pipelineParams.ambiente"
 
