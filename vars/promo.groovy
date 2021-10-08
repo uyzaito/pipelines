@@ -44,7 +44,6 @@ def call(body) {
                             oc project ${pipelineParams.ambiente}
                             oc tag ${IMAGE}:${VERSION} ${IMAGE}:latest
                         """
-                        //openshiftDeploy(depCfg: "${IMAGE}:${VERSION}", namespace: "${pipelineParams.ambiente}", waitTime: '10', waitUnit: 'min')
                     }
                 }                
             }            
